@@ -4,7 +4,7 @@ metadata:
   name: spre-arbeidsgiver
   namespace: default
   labels:
-    team: {{team}}
+    team: tbd
 spec:
   image: {{image}}
   port: 8080
