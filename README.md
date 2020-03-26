@@ -1,7 +1,7 @@
-# helse-vedtaksfeed
+# helse-spre-arbeidsgiver
 
 ## Beskrivelse
-Vedtaksfeed formidler sykepengevedtak til Infotrygd.
+Leser interne meldinger og republiserer til arbeidsgiver
 
 ## Kjøretidsavhengigheter
 

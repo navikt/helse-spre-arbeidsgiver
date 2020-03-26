@@ -1,7 +1,7 @@
 apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
-  name: vedtaksfeed
+  name: spre-arbeidsgiver
   namespace: default
   labels:
     team: {{team}}
@@ -32,13 +32,7 @@ spec:
     enabled: true
     paths:
       - mountPath: /var/run/secrets/nais.io/vault
-        kvPath: /serviceuser/data/dev/srvvedtaksfeed
-  ingresses:
-    - "https://vedtaksfeed.nais.preprod.local"
+        kvPath: /serviceuser/data/dev/srvsprearbeidsgiver
   env:
     - name: KAFKA_BOOTSTRAP_SERVERS
       value: b27apvl00045.preprod.local:8443,b27apvl00046.preprod.local:8443,b27apvl00047.preprod.local:8443
-    - name: JWKS_URL
-      value: http://security-token-service.default.svc.nais.local/rest/v1/sts/jwks
-    - name: JWT_ISSUER
-      value: https://security-token-service.nais.preprod.local

@@ -8,7 +8,6 @@ import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.ByteArrayDeserializer
 import org.apache.kafka.common.serialization.ByteArraySerializer
-import org.apache.kafka.common.serialization.StringDeserializer
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -35,7 +34,7 @@ data class Environment(
     val jwtIssuer: String,
     val kafkaBootstrapServers: String,
     val rapidTopic: String = "helse-rapid-v1",
-    val vedtaksfeedtopic: String = "privat-helse-vedtaksfeed-infotrygd"
+    val sprearbeidsgivertopic: String = "aapen-helse-spre-arbeidsgiver"
 )
 
 data class ServiceUser(
@@ -59,25 +58,16 @@ fun loadBaseConfig(env: Environment, serviceUser: ServiceUser): Properties = Pro
 
 fun Properties.toConsumerConfig(): Properties = Properties().also {
     it.putAll(this)
-    it[ConsumerConfig.GROUP_ID_CONFIG] = "vedtaksfeed-v1"
+    it[ConsumerConfig.GROUP_ID_CONFIG] = "spre-arbeidsgiver-v1"
     it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
     it[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = ByteArrayDeserializer::class.java
-    it[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = ByteArrayDeserializer::class.java
-    it[ConsumerConfig.MAX_POLL_RECORDS_CONFIG] = "1000"
-}
-
-fun Properties.toSeekingConsumer() = Properties().also {
-    it.putAll(this)
-    it[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = false
-    it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "latest"
-    it[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
-    it[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = VedtakDeserializer::class.java
+    it[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = TrengerInntektsmeldingDeserializer::class.java
     it[ConsumerConfig.MAX_POLL_RECORDS_CONFIG] = "1000"
 }
 
 fun Properties.toProducerConfig(): Properties = Properties().also {
     it.putAll(this)
-    it[ConsumerConfig.GROUP_ID_CONFIG] = "vedtaksfeed-v1"
+    it[ConsumerConfig.GROUP_ID_CONFIG] = "spre-arbeidsgiver-v1"
     it[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = ByteArraySerializer::class.java
-    it[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = ByteArraySerializer::class.java
+    it[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = TrengerInntektsmeldingSerializer::class.java
 }

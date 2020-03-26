@@ -4,11 +4,11 @@
             "configEntries": {},
             "members": [
                 {
-                    "member": "srvvedtaksfeed",
+                    "member": "srvsprearbeidsgiver",
                     "role": "PRODUCER"
                 },
                 {
-                    "member": "srvvedtaksfeed",
+                    "member": "srvsprearbeidsgiver",
                     "role": "CONSUMER"
                 },
                 {
@@ -18,10 +18,14 @@
                 {
                     "member": "S151890",
                     "role": "MANAGER"
+                },
+                {
+                    "member": "R154509",
+                    "role": "MANAGER"
                 }
             ],
             "numPartitions": 1,
-            "topicName": "privat-helse-vedtaksfeed-infotrygd"
+            "topicName": "aapen-helse-spre-arbeidsgiver"
         }
     ]
 }
