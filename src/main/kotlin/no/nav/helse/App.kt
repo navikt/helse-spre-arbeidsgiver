@@ -25,6 +25,8 @@ import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -79,13 +81,16 @@ fun Flow<Pair<ByteArray, JsonNode?>>.inntektsmeldingFlow() = this
     .filter { value ->
         value["@event_name"].asText() == "trenger_inntektsmelding"
     }
+    .onEach { value -> log.info("Ber om inntektsmelding på vedtaksperiode: {}", value["vedtaksperiodeId"].asText())}
     .map { value ->
-        TrengerInntektsmelding(
+        TrengerInntektsmeldingDTO(
             orgnummer = value["organisasjonsnummer"].asText(),
-            fnr = value["fødselsnummer"].asText()
+            fnr = value["fødselsnummer"].asText(),
+            fom = LocalDate.parse(value["fom"].asText()),
+            tom = LocalDate.parse(value["tom"].asText()),
+            opprettet = LocalDateTime.parse(value["opprettet"].asText())
         )
     }
-    .map { value -> TrengerInntektsmeldingDTO(value.orgnummer, value.fnr) }
 
 internal fun Application.installJacksonFeature() {
     install(ContentNegotiation) {
@@ -96,12 +101,10 @@ internal fun Application.installJacksonFeature() {
     }
 }
 
-data class TrengerInntektsmelding(
-    val orgnummer: String,
-    val fnr: String
-)
-
 data class TrengerInntektsmeldingDTO(
     val orgnummer: String,
-    val fnr: String
+    val fnr: String,
+    val fom: LocalDate,
+    val tom: LocalDate,
+    val opprettet: LocalDateTime
 )

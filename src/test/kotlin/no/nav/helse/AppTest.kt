@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.time.LocalDate
-import java.util.*
+import java.time.LocalDateTime
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class AppTest {
@@ -16,20 +17,33 @@ class AppTest {
     fun test() = runBlocking {
         val fnr = "12345678910"
         val orgnr = "987654321"
+        val opprettet = LocalDateTime.now()
         val json = asJsonNode(
             mapOf(
                 "@event_name" to "trenger_inntektsmelding",
                 "vedtaksperiodeId" to UUID.randomUUID(),
                 "fødselsnummer" to fnr,
                 "organisasjonsnummer" to orgnr,
-                "opprettet" to LocalDate.now(),
+                "opprettet" to opprettet,
                 "fom" to LocalDate.now(),
                 "tom" to LocalDate.now()
             )
         )
         val expected = listOf(
-            TrengerInntektsmeldingDTO(orgnummer = orgnr, fnr = fnr),
-            TrengerInntektsmeldingDTO(orgnummer = orgnr, fnr = fnr)
+            TrengerInntektsmeldingDTO(
+                orgnummer = orgnr,
+                fnr = fnr,
+                fom = LocalDate.now(),
+                tom = LocalDate.now(),
+                opprettet = opprettet
+            ),
+            TrengerInntektsmeldingDTO(
+                orgnummer = orgnr,
+                fnr = fnr,
+                fom = LocalDate.now(),
+                tom = LocalDate.now(),
+                opprettet = opprettet
+            )
         )
         val actual = listOf(
             ("123".toByteArray() to json),
