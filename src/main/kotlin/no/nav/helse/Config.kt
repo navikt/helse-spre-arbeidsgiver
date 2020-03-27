@@ -24,14 +24,10 @@ fun readServiceUserCredentials() = ServiceUser(
 
 fun setUpEnvironment() =
     Environment(
-        kafkaBootstrapServers = System.getenv("KAFKA_BOOTSTRAP_SERVERS"),
-        jwksUrl = System.getenv("JWKS_URL"),
-        jwtIssuer = System.getenv("JWT_ISSUER")
+        kafkaBootstrapServers = System.getenv("KAFKA_BOOTSTRAP_SERVERS")
     )
 
 data class Environment(
-    val jwksUrl: String,
-    val jwtIssuer: String,
     val kafkaBootstrapServers: String,
     val rapidTopic: String = "helse-rapid-v1",
     val sprearbeidsgivertopic: String = "aapen-helse-spre-arbeidsgiver"
