@@ -31,15 +31,15 @@ class AppTest {
         )
         val expected = listOf(
             TrengerInntektsmeldingDTO(
-                orgnummer = orgnr,
-                fnr = fnr,
+                organisasjonsnummer = orgnr,
+                fødselsnummer = fnr,
                 fom = LocalDate.now(),
                 tom = LocalDate.now(),
                 opprettet = opprettet
             ),
             TrengerInntektsmeldingDTO(
-                orgnummer = orgnr,
-                fnr = fnr,
+                organisasjonsnummer = orgnr,
+                fødselsnummer = fnr,
                 fom = LocalDate.now(),
                 tom = LocalDate.now(),
                 opprettet = opprettet
