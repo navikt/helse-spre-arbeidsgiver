@@ -64,6 +64,7 @@ fun main() = runBlocking(Executors.newFixedThreadPool(4).asCoroutineDispatcher()
         .inntektsmeldingFlow()
         .catch {
             server.stop(10, 10, TimeUnit.SECONDS)
+            log.error("feil i flow:", it)
             throw it
         }
         .collect { value ->
@@ -86,7 +87,7 @@ fun Flow<Pair<ByteArray, JsonNode?>>.inntektsmeldingFlow() = this
     .map { it.second }
     .filterNotNull()
     .filter { value ->
-        value["@event_name"].asText() == "trenger_inntektsmelding"
+        value["@event_name"]?.asText() == "trenger_inntektsmelding"
     }
     .filter {
         it.validerFelt("organisasjonsnummer")
