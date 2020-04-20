@@ -21,10 +21,10 @@ class AppTest {
         val json = asJsonNode(
             mapOf(
                 "@event_name" to "trenger_inntektsmelding",
+                "@opprettet" to opprettet,
                 "vedtaksperiodeId" to UUID.randomUUID(),
                 "fødselsnummer" to fnr,
                 "organisasjonsnummer" to orgnr,
-                "opprettet" to opprettet,
                 "fom" to LocalDate.now(),
                 "tom" to LocalDate.now()
             )
@@ -63,7 +63,7 @@ class AppTest {
                 "vedtaksperiodeId" to UUID.randomUUID(),
                 "fødselsnummer" to fnr,
                 "organisasjonsnummer" to orgnr,
-                "opprettet" to opprettet,
+                "@opprettet" to opprettet,
                 "fom" to LocalDate.now(),
                 "tom" to LocalDate.now()
             )

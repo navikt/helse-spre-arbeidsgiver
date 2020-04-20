@@ -94,7 +94,7 @@ fun Flow<Pair<ByteArray, JsonNode?>>.inntektsmeldingFlow() = this
             && it.validerFelt("fødselsnummer")
             && it.validerFelt("fom")
             && it.validerFelt("tom")
-            && it.validerFelt("opprettet")
+            && it.validerFelt("@opprettet")
     }
     .onEach { value -> log.info("Ber om inntektsmelding på vedtaksperiode: {}", value["vedtaksperiodeId"].asText()) }
     .map { value ->
@@ -103,7 +103,7 @@ fun Flow<Pair<ByteArray, JsonNode?>>.inntektsmeldingFlow() = this
             fødselsnummer = value["fødselsnummer"].asText(),
             fom = LocalDate.parse(value["fom"].asText()),
             tom = LocalDate.parse(value["tom"].asText()),
-            opprettet = LocalDateTime.parse(value["opprettet"].asText())
+            opprettet = LocalDateTime.parse(value["@opprettet"].asText())
         )
     }
 
