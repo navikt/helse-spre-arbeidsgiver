@@ -3,6 +3,7 @@ package no.nav.helse
 import io.mockk.mockk
 import io.mockk.verify
 import no.nav.helse.rapids_rivers.JsonMessage
+import no.nav.helse.rapids_rivers.testsupport.TestRapid
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -43,7 +44,7 @@ class BeOmInntektsmeldingerTest {
                 opprettet = opprettet
             )))
         }
-        assertEquals(2, testRapid.inspektør.events().size)
+        assertEquals(2, testRapid.inspektør.size)
     }
 
     @Test
