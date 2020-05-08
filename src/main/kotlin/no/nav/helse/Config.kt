@@ -9,7 +9,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
 
-const val vaultBase = "/var/run/secrets/nais.io/vault"
+const val vaultBase = "/var/run/secrets/nais.io/service_user"
 val vaultBasePath: Path = Paths.get(vaultBase)
 
 fun readServiceUserCredentials() = ServiceUser(
