@@ -1,25 +1,26 @@
 package no.nav.helse
 
+import com.fasterxml.jackson.databind.JsonNode
 import no.nav.helse.rapids_rivers.JsonMessage
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
+import no.nav.helse.rapids_rivers.asLocalDate
+import no.nav.helse.rapids_rivers.asLocalDateTime
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.UUID
 
 class BeOmInntektsmeldinger(private val rapidsConnection: RapidsConnection, private val arbeidsgiverProducer: KafkaProducer<String, TrengerInntektsmeldingDTO>) : River.PacketListener{
 
     init {
         River(rapidsConnection).apply {
-            validate { it.requireValue("@event_name", "trenger_inntektsmelding") }
-            validate { it.requireKey("organisasjonsnummer") }
-            validate { it.requireKey("fødselsnummer") }
-            validate { it.requireKey("fom") }
-            validate { it.requireKey("tom") }
-            validate { it.requireKey("vedtaksperiodeId") }
-            validate { it.requireKey("opprettet") }
+            validate {
+                it.requireValue("@event_name", "trenger_inntektsmelding")
+                it.requireKey("organisasjonsnummer", "fødselsnummer", "vedtaksperiodeId")
+                it.require("fom", JsonNode::asLocalDate)
+                it.require("tom", JsonNode::asLocalDate)
+                it.require("opprettet", JsonNode::asLocalDateTime)
+            }
         }.register(this)
     }
 
@@ -29,9 +30,9 @@ class BeOmInntektsmeldinger(private val rapidsConnection: RapidsConnection, priv
         val payload = TrengerInntektsmeldingDTO(
             organisasjonsnummer = packet["organisasjonsnummer"].asText(),
             fødselsnummer = packet["fødselsnummer"].asText(),
-            fom = LocalDate.parse(packet["fom"].asText()),
-            tom = LocalDate.parse(packet["tom"].asText()),
-            opprettet = LocalDateTime.parse(packet["opprettet"].asText())
+            fom = packet["fom"].asLocalDate(),
+            tom = packet["tom"].asLocalDate(),
+            opprettet = packet["opprettet"].asLocalDateTime()
         )
 
         arbeidsgiverProducer.send(ProducerRecord("aapen-helse-spre-arbeidsgiver", payload.fødselsnummer, payload)).get()
