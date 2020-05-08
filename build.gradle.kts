@@ -9,19 +9,9 @@ plugins {
 
 group = "no.nav.helse"
 
-val githubUser: String by project
-val githubPassword: String by project
-
 repositories {
-    mavenCentral()
-    maven {
-        url = uri("https://maven.pkg.github.com/navikt/rapids-and-rivers")
-        credentials {
-            username = githubUser
-            password = githubPassword
-        }
-    }
-    maven("http://packages.confluent.io/maven/")
+    jcenter()
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
