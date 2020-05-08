@@ -19,7 +19,7 @@ class BeOmInntektsmeldinger(private val rapidsConnection: RapidsConnection, priv
                 it.requireKey("organisasjonsnummer", "fødselsnummer", "vedtaksperiodeId")
                 it.require("fom", JsonNode::asLocalDate)
                 it.require("tom", JsonNode::asLocalDate)
-                it.require("opprettet", JsonNode::asLocalDateTime)
+                it.require("@opprettet", JsonNode::asLocalDateTime)
             }
         }.register(this)
     }
@@ -32,7 +32,7 @@ class BeOmInntektsmeldinger(private val rapidsConnection: RapidsConnection, priv
             fødselsnummer = packet["fødselsnummer"].asText(),
             fom = packet["fom"].asLocalDate(),
             tom = packet["tom"].asLocalDate(),
-            opprettet = packet["opprettet"].asLocalDateTime()
+            opprettet = packet["@opprettet"].asLocalDateTime()
         )
 
         arbeidsgiverProducer.send(ProducerRecord("aapen-helse-spre-arbeidsgiver", payload.fødselsnummer, payload)).get()

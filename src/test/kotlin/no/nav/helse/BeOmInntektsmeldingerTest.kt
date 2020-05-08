@@ -53,7 +53,7 @@ class BeOmInntektsmeldingerTest {
             "vedtaksperiodeId" to UUID.randomUUID(),
             "fødselsnummer" to fnr,
             "organisasjonsnummer" to orgnr,
-            "opprettet" to opprettet,
+            "@opprettet" to opprettet,
             "fom" to LocalDate.now(),
             "tom" to LocalDate.now()
         )).toJson())
@@ -67,7 +67,7 @@ class BeOmInntektsmeldingerTest {
                 "vedtaksperiodeId" to UUID.randomUUID(),
                 "fødselsnummer" to fnr,
                 "organisasjonsnummer" to orgnr,
-                "opprettet" to opprettet,
+                "@opprettet" to opprettet,
                 "fom" to LocalDate.now(),
                 "tom" to LocalDate.now()
             )
