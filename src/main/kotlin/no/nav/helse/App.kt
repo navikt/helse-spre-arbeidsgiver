@@ -28,17 +28,10 @@ fun launchApplication(
 ): RapidsConnection {
     val serviceUser = readServiceUserCredentials()
     val arbeidsgiverProducer =
-        KafkaProducer<String, TrengerInntektsmeldingDTO>(loadBaseConfig(environment.getValue("KAFKA_BOOTSTRAP_SERVERS"), serviceUser).toProducerConfig())
+        KafkaProducer<String, InntektsmeldingDTO>(loadBaseConfig(environment.getValue("KAFKA_BOOTSTRAP_SERVERS"), serviceUser).toProducerConfig())
 
     return RapidApplication.create(environment).apply {
         BeOmInntektsmeldinger(this, arbeidsgiverProducer)
+        TrengerIkkeInntektsmelding(this, arbeidsgiverProducer)
     }
 }
-
-data class TrengerInntektsmeldingDTO(
-    val organisasjonsnummer: String,
-    val fødselsnummer: String,
-    val fom: LocalDate,
-    val tom: LocalDate,
-    val opprettet: LocalDateTime
-)
